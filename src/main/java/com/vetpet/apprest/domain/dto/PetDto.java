@@ -15,7 +15,8 @@ public class PetDto {
     private String namePet;
     private String speciesPet;
     private String breedPet;
-    private OwnerDto OwnerPet;
+    private Long ownerIdPet;
+    private OwnerDto ownerPet;
     private Boolean hasChipPet;
     private LocalDate birthDatePet;
 

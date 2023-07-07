@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class PetRepositoryImp implements PetDtoRepository {
@@ -26,4 +27,28 @@ public class PetRepositoryImp implements PetDtoRepository {
         List<PetEntity> pets = petRepository.findAll();
         return ipetMapper.toPetsDto(pets);
     }
+
+    @Override
+    public List<PetDto> findBySpecies(String specie) {
+        List<PetEntity> pets = petRepository.findBySpeciesOrderByName(specie);
+        return ipetMapper.toPetsDto(pets);
+    }
+
+    @Override
+    public PetDto save(PetDto petDto) {
+        PetEntity petEntity = ipetMapper.toPetEntity(petDto);
+        return ipetMapper.toPetDto(petRepository.save(petEntity));
+    }
+
+    @Override
+    public Optional<PetDto> findById(Long petId) {
+        Optional<PetEntity> petEntity = petRepository.findById(petId);
+        return petEntity.map(ipetMapper::toPetDto);
+    }
+
+    @Override
+    public void delete(Long petId) {
+        petRepository.deleteById(petId);
+    }
+
 }

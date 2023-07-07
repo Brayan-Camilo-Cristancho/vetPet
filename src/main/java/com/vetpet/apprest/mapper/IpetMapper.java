@@ -17,6 +17,7 @@ public interface IpetMapper {
     @Mapping(target = "breedPet", source = "breed")
     @Mapping(target = "birthDatePet", source = "birthDate")
     @Mapping(target = "namePet", source = "name")
+    @Mapping(target = "ownerIdPet", ignore = true)
     PetDto toPetDto(PetEntity petEntity);
 
     List<PetDto> toPetsDto(List<PetEntity> pets);
@@ -26,5 +27,6 @@ public interface IpetMapper {
     @Mapping(target = "status", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "ownerId", source = "ownerIdPet")
     PetEntity toPetEntity(PetDto petDto);
 }

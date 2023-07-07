@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PetService {
@@ -19,5 +20,21 @@ public class PetService {
 
     public List<PetDto> getAll() {
         return this.petDtoRepository.getAll();
+    }
+
+    public List<PetDto> getBySpecies(String specie) {
+        return this.petDtoRepository.findBySpecies(specie);
+    }
+
+    public PetDto save(PetDto petDto) {
+        return this.petDtoRepository.save(petDto);
+    }
+
+    public Optional<PetDto> petFindById(Long petId) {
+        return this.petDtoRepository.findById(petId);
+    }
+
+    public void deletePet(Long petId) {
+        this.petDtoRepository.delete(petId);
     }
 }

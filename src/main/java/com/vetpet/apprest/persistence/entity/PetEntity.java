@@ -49,6 +49,10 @@ public class PetEntity {
     @JoinColumn(name = "owner_id", nullable = false, insertable = false, updatable = false)
     private OwnerEntity ownerEntity;
 
+    @Column(name = "owner_id")
+    @NotNull
+    private Long ownerId;
+
     @Column(name = "status")
     private Boolean status;
 
