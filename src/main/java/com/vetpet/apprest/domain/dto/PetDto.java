@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 public class PetDto {
-
+    private Long idPet;
     private String namePet;
     private String speciesPet;
     private String breedPet;

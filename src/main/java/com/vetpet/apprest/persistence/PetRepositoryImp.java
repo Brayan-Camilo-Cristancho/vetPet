@@ -51,4 +51,10 @@ public class PetRepositoryImp implements PetDtoRepository {
         petRepository.deleteById(petId);
     }
 
+    @Override
+    public PetDto update(PetDto petDto) {
+        PetEntity petEntity = ipetMapper.toPetEntity(petDto);
+        return ipetMapper.toPetDto(petRepository.save(petEntity));
+    }
+
 }

@@ -9,6 +9,4 @@ import java.util.Optional;
 
 public interface PetRepository extends ListCrudRepository<PetEntity, Long> {
     List<PetEntity> findBySpeciesOrderByName(String species);
-
-    Optional<PetEntity> findByPetId(Long petId);
 }

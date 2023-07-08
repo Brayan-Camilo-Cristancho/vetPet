@@ -37,4 +37,8 @@ public class PetService {
     public void deletePet(Long petId) {
         this.petDtoRepository.delete(petId);
     }
+
+    public PetDto updatePet(PetDto petDto) {
+        return this.petDtoRepository.update(petDto);
+    }
 }

@@ -16,4 +16,6 @@ public interface PetDtoRepository {
     Optional<PetDto> findById(Long petId);
 
     void delete(Long petId);
+
+    PetDto update(PetDto petDto);
 }

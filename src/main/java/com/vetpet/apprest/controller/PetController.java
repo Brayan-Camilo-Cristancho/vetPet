@@ -42,4 +42,9 @@ public class PetController {
     public void deletePet(@PathVariable Long id) {
         petService.deletePet(id);
     }
+
+    @PutMapping("/updatepet")
+    public PetDto updatePet(@RequestBody PetDto petDto) {
+        return petService.updatePet(petDto);
+    }
 }
