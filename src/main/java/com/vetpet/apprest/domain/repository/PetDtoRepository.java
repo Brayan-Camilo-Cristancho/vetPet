@@ -18,4 +18,6 @@ public interface PetDtoRepository {
     void delete(Long petId);
 
     PetDto update(PetDto petDto);
+
+    List<PetDto> findByOwner(String firstNameOwner, String lastNameOwner, String emailOwner);
 }

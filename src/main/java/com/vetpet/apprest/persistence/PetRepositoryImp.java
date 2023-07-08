@@ -57,4 +57,10 @@ public class PetRepositoryImp implements PetDtoRepository {
         return ipetMapper.toPetDto(petRepository.save(petEntity));
     }
 
+    @Override
+    public List<PetDto> findByOwner(String firstName, String lastName, String email) {
+        List<PetEntity> petEntities = petRepository.findByOwnerFirstNameAndLastNameAndEmail(firstName,lastName,email);
+        return ipetMapper.toPetsDto(petEntities);
+    }
+
 }

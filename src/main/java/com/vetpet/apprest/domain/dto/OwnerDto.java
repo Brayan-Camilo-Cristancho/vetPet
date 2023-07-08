@@ -8,6 +8,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 public class OwnerDto {
+    private Long idOwner;
     private String firstNameOwner;
     private String lastNameOwner;
     private String addressOwner;

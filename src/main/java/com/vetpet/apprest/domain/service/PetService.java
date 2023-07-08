@@ -41,4 +41,8 @@ public class PetService {
     public PetDto updatePet(PetDto petDto) {
         return this.petDtoRepository.update(petDto);
     }
+
+    public List<PetDto> findByOwner(String firstName, String lastName, String email) {
+        return this.petDtoRepository.findByOwner(firstName, lastName, email);
+    }
 }

@@ -18,7 +18,7 @@ public class PetController {
         this.petService = petService;
     }
 
-    @GetMapping("/getall")
+    @GetMapping("/get-all")
     public List<PetDto> getAllPets() {
         return petService.getAll();
     }
@@ -28,23 +28,28 @@ public class PetController {
         return petService.getBySpecies(specie);
     }
 
-    @PostMapping("/savepet")
+    @PostMapping("/save-pet")
     public PetDto savePet(@RequestBody PetDto petDto) {
         return petService.save(petDto);
     }
 
-    @GetMapping("petid/{id}")
+    @GetMapping("pet-id/{id}")
     public Optional<PetDto> getById(@PathVariable Long id) {
         return petService.petFindById(id);
     }
 
-    @DeleteMapping("deletepet/{id}")
+    @DeleteMapping("delete-pet/{id}")
     public void deletePet(@PathVariable Long id) {
         petService.deletePet(id);
     }
 
-    @PutMapping("/updatepet")
+    @PutMapping("/update-pet")
     public PetDto updatePet(@RequestBody PetDto petDto) {
         return petService.updatePet(petDto);
+    }
+
+    @GetMapping("/get-owner")
+    public List<PetDto> getByOwner(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String email) {
+        return petService.findByOwner(firstName, lastName, email);
     }
 }

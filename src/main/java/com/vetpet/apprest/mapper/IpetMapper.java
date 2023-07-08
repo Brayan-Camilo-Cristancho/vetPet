@@ -4,7 +4,6 @@ import com.vetpet.apprest.persistence.entity.PetEntity;
 import com.vetpet.apprest.domain.dto.PetDto;
 import org.mapstruct.*;
 
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 

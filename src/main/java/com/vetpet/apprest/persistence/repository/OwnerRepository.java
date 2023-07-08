@@ -1,4 +1,16 @@
 package com.vetpet.apprest.persistence.repository;
 
-public interface OwnerRepository {
+import com.vetpet.apprest.persistence.entity.OwnerEntity;
+import org.springframework.data.repository.ListCrudRepository;
+
+import java.util.Optional;
+
+public interface OwnerRepository extends ListCrudRepository<OwnerEntity, Long> {
+    @Override
+    Optional<OwnerEntity> findById(Long id);
+
+    Optional<OwnerEntity> findByEmail(String email);
+
+    void deleteByEmail(String email);
+
 }
