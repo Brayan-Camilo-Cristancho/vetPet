@@ -5,11 +5,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListCrudRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface PetRepository extends ListCrudRepository<PetEntity, Long> {
     List<PetEntity> findBySpeciesOrderByName(String species);
 
-    @Query("SELECT pet FROM PetEntity pet INNER JOIN pet.ownerEntity o WHERE o.firstName = :firstName AND o.lastName= :lastName AND o.email = :email")
-    List<PetEntity> findByOwnerFirstNameAndLastNameAndEmail(String firstName, String lastName, String email);
+    boolean existsByIdChip(String chip);
+
+    void deleteByIdChip(String idChip);
+
+    Optional<PetEntity> findByIdChip(String chip);
+
+    List<PetEntity> findByOwnerEntityEmailAndOwnerEntityIdentification(String email, String identification);
 }

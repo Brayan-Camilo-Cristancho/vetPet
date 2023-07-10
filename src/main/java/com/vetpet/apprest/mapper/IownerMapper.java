@@ -13,13 +13,13 @@ public interface IownerMapper {
     @Mapping(target = "lastNameOwner", source = "lastName")
     @Mapping(target = "firstNameOwner", source = "firstName")
     @Mapping(target = "addressOwner", source = "address")
-    @Mapping(target = "idOwner", ignore = true)
+    @Mapping(target = "idenOwner", ignore = true)
     OwnerDto toOwnerDto(OwnerEntity ownerEntity);
 
     @InheritInverseConfiguration
-    @Mapping(target = "ownerId", source = "idOwner")
     @Mapping(target = "status", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "identification", source = "idenOwner")
     OwnerEntity toOwnerEntity(OwnerDto ownerDto);
 }

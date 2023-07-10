@@ -1,6 +1,7 @@
 package com.vetpet.apprest.persistence.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -56,19 +57,24 @@ public class PetEntity {
     @Column(name = "status")
     private Boolean status;
 
+    @Column(name = "chip_id", unique = true, nullable = false)
+    @NotNull
+    @Size(max = 20)
+    private String idChip;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "petEntity", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "petEntity", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<AppointmentEntity> appointmentEntities = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "petEntity", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "petEntity", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<PetVaccine> petVaccines = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "petEntity", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "petEntity", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<TreatmentEntity> treatmentEntities = new LinkedHashSet<>();
 
 }

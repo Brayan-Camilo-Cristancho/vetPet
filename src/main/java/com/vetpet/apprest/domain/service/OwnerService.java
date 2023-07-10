@@ -4,7 +4,7 @@ import com.vetpet.apprest.domain.dto.OwnerDto;
 import com.vetpet.apprest.domain.repository.OwnerDtoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.Optional;
 

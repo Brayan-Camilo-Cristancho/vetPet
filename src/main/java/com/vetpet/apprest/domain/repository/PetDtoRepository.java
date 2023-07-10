@@ -1,5 +1,6 @@
 package com.vetpet.apprest.domain.repository;
 
+
 import com.vetpet.apprest.domain.dto.PetDto;
 
 import java.util.List;
@@ -7,17 +8,9 @@ import java.util.Optional;
 
 public interface PetDtoRepository {
 
-    List<PetDto> getAll();
-
     List<PetDto> findBySpecies(String specie);
 
-    PetDto save(PetDto petDto);
+    List<PetDto> findByOwner(String email, String iden);
 
-    Optional<PetDto> findById(Long petId);
-
-    void delete(Long petId);
-
-    PetDto update(PetDto petDto);
-
-    List<PetDto> findByOwner(String firstNameOwner, String lastNameOwner, String emailOwner);
+    Optional<PetDto> findByChip(String chip);
 }

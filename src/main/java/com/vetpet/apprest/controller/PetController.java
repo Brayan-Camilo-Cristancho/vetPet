@@ -29,27 +29,27 @@ public class PetController {
     }
 
     @PostMapping("/save-pet")
-    public PetDto savePet(@RequestBody PetDto petDto) {
-        return petService.save(petDto);
+    public void savePet(@RequestBody PetDto petDto) {
+        petService.save(petDto);
     }
 
     @GetMapping("pet-id/{id}")
-    public Optional<PetDto> getById(@PathVariable Long id) {
-        return petService.petFindById(id);
+    public Optional<PetDto> getByChip(@PathVariable String id) {
+        return petService.getByChip(id);
     }
 
     @DeleteMapping("delete-pet/{id}")
-    public void deletePet(@PathVariable Long id) {
+    public void deletePet(@PathVariable String id) {
         petService.deletePet(id);
     }
 
     @PutMapping("/update-pet")
-    public PetDto updatePet(@RequestBody PetDto petDto) {
-        return petService.updatePet(petDto);
+    public void updatePet(@RequestBody PetDto petDto) {
+        petService.updatePet(petDto);
     }
 
     @GetMapping("/get-owner")
-    public List<PetDto> getByOwner(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String email) {
-        return petService.findByOwner(firstName, lastName, email);
+    public List<PetDto> getByOwner(@RequestParam String email, @RequestParam String id) {
+        return petService.getByOwner(email, id);
     }
 }

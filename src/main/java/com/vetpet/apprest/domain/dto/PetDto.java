@@ -1,6 +1,7 @@
 package com.vetpet.apprest.domain.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,11 +12,10 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 public class PetDto {
-    private Long idPet;
     private String namePet;
+    private String chipIdPet;
     private String speciesPet;
     private String breedPet;
-    private Long ownerIdPet;
     private OwnerDto ownerPet;
     private Boolean hasChipPet;
     private LocalDate birthDatePet;

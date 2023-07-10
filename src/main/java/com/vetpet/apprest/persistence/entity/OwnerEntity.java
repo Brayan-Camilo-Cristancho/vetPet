@@ -36,6 +36,11 @@ public class OwnerEntity {
     @Column(name = "address", length = 200)
     private String address;
 
+    @Size(max = 20)
+    @NotNull
+    @Column(unique = true, nullable = false)
+    private String identification;
+
     @Size(max = 10)
     @NotNull
     @Column(name = "phone", nullable = false, length = 10)
@@ -50,14 +55,13 @@ public class OwnerEntity {
     @Column(name = "status")
     private Boolean status;
 
-
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "ownerEntity")
+    @OneToMany(mappedBy = "ownerEntity", cascade = CascadeType.ALL)
     private Set<PetEntity> petEntities = new LinkedHashSet<>();
 
 }
