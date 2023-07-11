@@ -1,40 +1,48 @@
 package com.vetpet.apprest.domain.service;
 
 import com.vetpet.apprest.domain.dto.OwnerDto;
+import com.vetpet.apprest.domain.repository.CrudRepository;
 import com.vetpet.apprest.domain.repository.OwnerDtoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.util.List;
 import java.util.Optional;
+
 
 @Service
 public class OwnerService {
     private final OwnerDtoRepository ownerDtoRepository;
+    private final CrudRepository<OwnerDto> crudRepository;
 
     @Autowired
-    public OwnerService(OwnerDtoRepository ownerDtoRepository) {
+    public OwnerService(OwnerDtoRepository ownerDtoRepository, CrudRepository<OwnerDto> crudRepository) {
         this.ownerDtoRepository = ownerDtoRepository;
+        this.crudRepository = crudRepository;
     }
 
-    public Optional<OwnerDto> ownerGetById(Long ownerId) {
-        return ownerDtoRepository.ownerGetById(ownerId);
+    public List<OwnerDto> ownerGetAll() {
+        return this.crudRepository.getAll();
     }
 
-    public Optional<OwnerDto> ownerGetByEmail(String email) {
-        return ownerDtoRepository.ownerGetByEmail(email);
+    public void save(OwnerDto ownerDto) {
+        this.crudRepository.save(ownerDto);
     }
 
-    public OwnerDto saveOwner(OwnerDto ownerDto) {
-        return ownerDtoRepository.saveOwner(ownerDto);
+    public void update(OwnerDto ownerDto) {
+        this.crudRepository.update(ownerDto);
     }
 
-    public OwnerDto updateOwner(OwnerDto ownerDto) {
-        return ownerDtoRepository.updateOwner(ownerDto);
+    public void delete(String iden) {
+        crudRepository.delete(iden);
     }
 
-    public void deleteOwner(String email) {
-        ownerDtoRepository.deleteOwner(email);
+    public Optional<OwnerDto> getById(String id) {
+        return this.ownerDtoRepository.findByIdentification(id);
     }
 
+    public Optional<OwnerDto> getByEmail(String email) {
+        return this.ownerDtoRepository.findByEmail(email);
+    }
 }

@@ -38,12 +38,12 @@ public class PetController {
         return petService.getByChip(id);
     }
 
-    @DeleteMapping("delete-pet/{id}")
-    public void deletePet(@PathVariable String id) {
+    @DeleteMapping("delete-pet")
+    public void deletePet(@RequestParam String id) {
         petService.deletePet(id);
     }
 
-    @PutMapping("/update-pet")
+    @PatchMapping ("/update-pet")
     public void updatePet(@RequestBody PetDto petDto) {
         petService.updatePet(petDto);
     }

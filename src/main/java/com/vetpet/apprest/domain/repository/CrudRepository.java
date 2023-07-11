@@ -4,7 +4,7 @@ package com.vetpet.apprest.domain.repository;
 
 import java.util.List;
 
-public abstract class Repositroy<T> {
+public abstract class CrudRepository<T> {
     public abstract List<T> getAll();
 
     public abstract void save(T entity);

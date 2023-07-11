@@ -3,7 +3,8 @@ package com.vetpet.apprest.domain.agregates;
 import java.security.SecureRandom;
 
 public class MicrochipIDGenerator {
-    public static String generateMicrochipID() {
+    public String generateMicrochipID() {
+
         // Generate the country of origin (3 digits)
         String countryNumber = generateRandomNumber(3);
 
@@ -13,13 +14,10 @@ public class MicrochipIDGenerator {
         // Generate the identification number (9 digits)
         String numberIdentification = generateRandomNumber(9);
 
-        // Combine the components to form the microchip ID
-        String microchipID = countryNumber + code + numberIdentification;
-
-        return microchipID;
+        return countryNumber + code + numberIdentification;
     }
 
-    public static String generateRandomNumber(int length) {
+    private String generateRandomNumber(int length) {
         SecureRandom secureRandom = new SecureRandom();
         int min = (int) Math.pow(10, length - 1);
         int max = (int) Math.pow(10, length) - 1;

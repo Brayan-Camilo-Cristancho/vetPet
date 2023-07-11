@@ -5,6 +5,8 @@ import com.vetpet.apprest.domain.dto.OwnerDto;
 import org.mapstruct.*;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING, uses = {IpetMapper.class})
 public interface IownerMapper {
@@ -15,6 +17,8 @@ public interface IownerMapper {
     @Mapping(target = "addressOwner", source = "address")
     @Mapping(target = "idenOwner", ignore = true)
     OwnerDto toOwnerDto(OwnerEntity ownerEntity);
+
+    List<OwnerDto> toOwnersDto(List<OwnerEntity> ownerEntities);
 
     @InheritInverseConfiguration
     @Mapping(target = "status", ignore = true)

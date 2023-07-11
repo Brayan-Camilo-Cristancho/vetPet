@@ -2,7 +2,7 @@ package com.vetpet.apprest.persistence;
 
 import com.vetpet.apprest.domain.dto.PetDto;
 import com.vetpet.apprest.domain.repository.PetDtoRepository;
-import com.vetpet.apprest.domain.repository.Repositroy;
+import com.vetpet.apprest.domain.repository.CrudRepository;
 import com.vetpet.apprest.mapper.IpetMapper;
 import com.vetpet.apprest.persistence.entity.PetEntity;
 import com.vetpet.apprest.persistence.repository.OwnerRepository;
@@ -11,74 +11,86 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class PetRepositoryImp extends Repositroy<PetDto> implements PetDtoRepository {
+public class PetCrudRepositoryImp extends CrudRepository<PetDto> implements PetDtoRepository {
     private final PetRepository petRepository;
     private final OwnerRepository ownerRepository;
     private final IpetMapper ipetMapper;
 
+
     @Autowired
-    public PetRepositoryImp(PetRepository petRepository, OwnerRepository ownerRepository, IpetMapper ipetMapper) {
+    public PetCrudRepositoryImp(PetRepository petRepository, OwnerRepository ownerRepository, IpetMapper ipetMapper) {
         this.petRepository = petRepository;
         this.ownerRepository = ownerRepository;
         this.ipetMapper = ipetMapper;
     }
 
     @Override
+    @Transactional
     public List<PetDto> findBySpecies(String specie) {
         List<PetEntity> pets = petRepository.findBySpeciesOrderByName(specie);
         return ipetMapper.toPetsDto(pets);
     }
 
     @Override
+    @Transactional
     public List<PetDto> findByOwner(String email, String iden) {
         return ipetMapper.toPetsDto(petRepository.findByOwnerEntityEmailAndOwnerEntityIdentification(email, iden));
     }
 
     @Override
+    @Transactional
     public Optional<PetDto> findByChip(String chip) {
         return petRepository.findByIdChip(chip).map(ipetMapper::toPetDto);
     }
 
     @Override
+    @Transactional
     public List<PetDto> getAll() {
         return ipetMapper.toPetsDto(petRepository.findAll());
     }
 
     @Override
-    @Transactional
     public void save(PetDto petDto) {
 
         String iden = petDto.getOwnerPet().getIdenOwner();
         String email = petDto.getOwnerPet().getEmailOwner();
-        if (ownerRepository.existsByEmailAndIdentification(email, iden)) {
-            PetEntity petEntity = ipetMapper.toPetEntity(petDto);
-            ownerRepository.findByIdentification(iden).map(ownerEntity -> {
-                petEntity.setOwnerEntity(ownerEntity);
-                petEntity.setOwnerId(ownerEntity.getOwnerId());
-                return petEntity;
-            }).ifPresent(petRepository::save);
-        }
+        PetEntity petEntity = ipetMapper.toPetEntity(petDto);
+        petEntity.setStatus(true);
+        ownerRepository.findByEmailAndIdentification(email, iden).ifPresent(ownerEntity -> {
+            petEntity.setOwnerEntity(ownerEntity);
+            petEntity.setOwnerId(ownerEntity.getOwnerId());
+            petRepository.save(petEntity);
+        });
     }
 
     @Override
+    @Transactional
     public void update(PetDto petDto) {
         PetEntity petEntity = ipetMapper.toPetEntity(petDto);
-        if (petEntity.getOwnerEntity() != null) {
-            String idenOwner = petEntity.getOwnerEntity().getIdentification();
-            String emailOwner = petEntity.getOwnerEntity().getEmail();
-            if (petRepository.existsByIdChip(petEntity.getIdChip()) && ownerRepository.existsByEmailAndIdentification(emailOwner, idenOwner)) {
-                petRepository.save(petEntity);
+        petRepository.findByIdChip(petEntity.getIdChip()).ifPresent(petEntity1 -> {
+            petEntity.setPetId(petEntity1.getPetId());
+            petEntity.setCreatedAt(petEntity1.getCreatedAt());
+            petEntity.setStatus(petEntity1.getStatus());
+            if (petEntity.getOwnerEntity() != null) {
+                ownerRepository.findByEmailAndIdentification(petEntity.getOwnerEntity().getEmail(), petEntity.getOwnerEntity().getIdentification()).ifPresent(ownerEntity -> {
+                    petEntity.setOwnerId(ownerEntity.getOwnerId());
+                    petEntity.setOwnerEntity(ownerEntity);
+                });
+            } else {
+                petEntity.setOwnerId(petEntity1.getOwnerId());
+                petEntity.setOwnerEntity(petEntity1.getOwnerEntity());
             }
-        } else if (petRepository.existsByIdChip(petEntity.getIdChip())) {
             petRepository.save(petEntity);
-        }
+        });
     }
 
     @Override
+    @Transactional
     public void delete(String chipId) {
         if (petRepository.existsByIdChip(chipId)) {
             petRepository.deleteByIdChip(chipId);

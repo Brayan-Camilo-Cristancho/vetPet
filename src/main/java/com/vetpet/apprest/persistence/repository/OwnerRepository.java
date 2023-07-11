@@ -1,7 +1,6 @@
 package com.vetpet.apprest.persistence.repository;
 
 import com.vetpet.apprest.persistence.entity.OwnerEntity;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListCrudRepository;
 
 import java.util.Optional;
@@ -14,7 +13,9 @@ public interface OwnerRepository extends ListCrudRepository<OwnerEntity, Long> {
 
     Optional<OwnerEntity> findByEmail(String email);
 
-    boolean existsByEmailAndIdentification(String email, String iden);
+    Optional<OwnerEntity> findByEmailAndIdentification(String email, String iden);
+
+    boolean existsByIdentification(String identification);
 
     void deleteByEmail(String email);
 
