@@ -15,8 +15,4 @@ public interface OwnerRepository extends ListCrudRepository<OwnerEntity, Long> {
 
     Optional<OwnerEntity> findByEmailAndIdentification(String email, String iden);
 
-    boolean existsByIdentification(String identification);
-
-    void deleteByEmail(String email);
-
 }

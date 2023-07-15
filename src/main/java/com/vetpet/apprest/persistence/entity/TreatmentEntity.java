@@ -53,7 +53,7 @@ public class TreatmentEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "treatmentEntity",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "treatmentEntity", cascade = CascadeType.ALL)
     private Set<TreatmentMedicationEntity> treatmentMedicationEntities = new LinkedHashSet<>();
 
 }

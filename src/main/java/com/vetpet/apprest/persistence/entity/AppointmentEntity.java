@@ -62,7 +62,7 @@ public class AppointmentEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToOne(mappedBy = "appointmentEntity",cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "appointmentEntity", cascade = CascadeType.ALL)
     private InvoiceEntity invoiceEntity;
 
 }

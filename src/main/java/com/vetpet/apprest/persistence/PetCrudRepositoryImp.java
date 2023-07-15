@@ -61,10 +61,12 @@ public class PetCrudRepositoryImp extends CrudRepository<PetDto> implements PetD
         String email = petDto.getOwnerPet().getEmailOwner();
         PetEntity petEntity = ipetMapper.toPetEntity(petDto);
         petEntity.setStatus(true);
-        ownerRepository.findByEmailAndIdentification(email, iden).ifPresent(ownerEntity -> {
+        ownerRepository.findByEmailAndIdentification(email, iden).ifPresentOrElse(ownerEntity -> {
             petEntity.setOwnerEntity(ownerEntity);
             petEntity.setOwnerId(ownerEntity.getOwnerId());
             petRepository.save(petEntity);
+        }, () -> {
+            throw new RuntimeException("Error message");
         });
     }
 
@@ -72,20 +74,24 @@ public class PetCrudRepositoryImp extends CrudRepository<PetDto> implements PetD
     @Transactional
     public void update(PetDto petDto) {
         PetEntity petEntity = ipetMapper.toPetEntity(petDto);
-        petRepository.findByIdChip(petEntity.getIdChip()).ifPresent(petEntity1 -> {
+        petRepository.findByIdChip(petEntity.getIdChip()).ifPresentOrElse(petEntity1 -> {
             petEntity.setPetId(petEntity1.getPetId());
             petEntity.setCreatedAt(petEntity1.getCreatedAt());
             petEntity.setStatus(petEntity1.getStatus());
             if (petEntity.getOwnerEntity() != null) {
-                ownerRepository.findByEmailAndIdentification(petEntity.getOwnerEntity().getEmail(), petEntity.getOwnerEntity().getIdentification()).ifPresent(ownerEntity -> {
+                ownerRepository.findByEmailAndIdentification(petEntity.getOwnerEntity().getEmail(), petEntity.getOwnerEntity().getIdentification()).ifPresentOrElse(ownerEntity -> {
                     petEntity.setOwnerId(ownerEntity.getOwnerId());
                     petEntity.setOwnerEntity(ownerEntity);
+                }, () -> {
+                    throw new RuntimeException();
                 });
             } else {
                 petEntity.setOwnerId(petEntity1.getOwnerId());
                 petEntity.setOwnerEntity(petEntity1.getOwnerEntity());
             }
             petRepository.save(petEntity);
+        }, () -> {
+            throw new RuntimeException();
         });
     }
 
@@ -94,6 +100,8 @@ public class PetCrudRepositoryImp extends CrudRepository<PetDto> implements PetD
     public void delete(String chipId) {
         if (petRepository.existsByIdChip(chipId)) {
             petRepository.deleteByIdChip(chipId);
+        } else {
+            throw new RuntimeException();
         }
     }
 }

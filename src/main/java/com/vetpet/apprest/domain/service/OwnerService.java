@@ -3,7 +3,11 @@ package com.vetpet.apprest.domain.service;
 import com.vetpet.apprest.domain.dto.OwnerDto;
 import com.vetpet.apprest.domain.repository.CrudRepository;
 import com.vetpet.apprest.domain.repository.OwnerDtoRepository;
+import com.vetpet.apprest.exceptions.ToDoExceptions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 
@@ -22,27 +26,54 @@ public class OwnerService {
         this.crudRepository = crudRepository;
     }
 
-    public List<OwnerDto> ownerGetAll() {
-        return this.crudRepository.getAll();
+    public ResponseEntity<?> ownerGetAll() {
+        List<OwnerDto> ownerDtos = this.crudRepository.getAll();
+        if (ownerDtos.isEmpty()) {
+            throw new ToDoExceptions("No owners to view", HttpStatus.NO_CONTENT);
+        }
+        return ResponseEntity.ok(ownerDtos);
     }
 
-    public void save(OwnerDto ownerDto) {
-        this.crudRepository.save(ownerDto);
+    public ResponseEntity<?> save(OwnerDto ownerDto) {
+        try {
+            this.crudRepository.save(ownerDto);
+        } catch (DataIntegrityViolationException e) {
+            throw new ToDoExceptions("Check your data again", HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body("Owner created successfully");
     }
 
-    public void update(OwnerDto ownerDto) {
-        this.crudRepository.update(ownerDto);
+    public ResponseEntity<?> update(OwnerDto ownerDto) {
+        try {
+            this.crudRepository.update(ownerDto);
+        } catch (Exception e) {
+            throw new ToDoExceptions("Check your data again", HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok("Data updated successfully");
     }
 
-    public void delete(String iden) {
-        crudRepository.delete(iden);
+    public ResponseEntity<?> delete(String iden) {
+        try {
+            crudRepository.delete(iden);
+        } catch (RuntimeException e) {
+            throw new ToDoExceptions("Owner not found as it does not exist", HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok("Owner deleted successfully");
     }
 
-    public Optional<OwnerDto> getById(String id) {
-        return this.ownerDtoRepository.findByIdentification(id);
+    public ResponseEntity<?> getById(String id) {
+        Optional<OwnerDto> ownerDto = this.ownerDtoRepository.findByIdentification(id);
+        if (ownerDto.isEmpty()) {
+            throw new ToDoExceptions("Searched owner not found", HttpStatus.NO_CONTENT);
+        }
+        return ResponseEntity.ok(ownerDto);
     }
 
-    public Optional<OwnerDto> getByEmail(String email) {
-        return this.ownerDtoRepository.findByEmail(email);
+    public ResponseEntity<?> getByEmail(String email) {
+        Optional<OwnerDto> ownerDto = this.ownerDtoRepository.findByEmail(email);
+        if (ownerDto.isEmpty()) {
+            throw new ToDoExceptions("Searched owner not found", HttpStatus.NO_CONTENT);
+        }
+        return ResponseEntity.ok(ownerDto);
     }
 }

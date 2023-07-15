@@ -3,10 +3,8 @@ package com.vetpet.apprest.controller;
 import com.vetpet.apprest.domain.dto.OwnerDto;
 import com.vetpet.apprest.domain.service.OwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/owners")
@@ -19,32 +17,32 @@ public class OwnerController {
     }
 
     @GetMapping("/owner-all")
-    public List<OwnerDto> getAllOwner() {
+    public ResponseEntity<?> getAllOwner() {
         return ownerService.ownerGetAll();
     }
 
     @PostMapping("/owner-save")
-    public void saveOwner(@RequestBody OwnerDto ownerDto) {
-        ownerService.save(ownerDto);
+    public ResponseEntity<?> saveOwner(@RequestBody OwnerDto ownerDto) {
+        return ownerService.save(ownerDto);
     }
 
     @PatchMapping("/owner-update")
-    public void updateOwner(@RequestBody OwnerDto ownerDto) {
-        ownerService.update(ownerDto);
+    public ResponseEntity<?> updateOwner(@RequestBody OwnerDto ownerDto) {
+        return ownerService.update(ownerDto);
     }
 
     @DeleteMapping("/owner-delete")
-    public void deleteOwner(@RequestParam String id) {
-        ownerService.delete(id);
+    public ResponseEntity<?> deleteOwner(@RequestParam String id) {
+        return ownerService.delete(id);
     }
 
     @GetMapping("/owner-id/{id}")
-    public Optional<OwnerDto> getById(@PathVariable String id) {
+    public ResponseEntity<?> getById(@PathVariable String id) {
         return ownerService.getById(id);
     }
 
     @GetMapping("/owner-email/{email}")
-    public Optional<OwnerDto> getByEmail(@PathVariable String email) {
+    public ResponseEntity<?> getByEmail(@PathVariable String email) {
         return ownerService.getByEmail(email);
     }
 }

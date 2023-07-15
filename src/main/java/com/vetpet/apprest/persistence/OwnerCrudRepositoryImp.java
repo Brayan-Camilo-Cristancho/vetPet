@@ -38,22 +38,26 @@ public class OwnerCrudRepositoryImp extends CrudRepository<OwnerDto> implements 
     @Override
     public void update(OwnerDto ownerDto) {
         OwnerEntity ownerEntity = iownerMapper.toOwnerEntity(ownerDto);
-        ownerRepository.findByEmailAndIdentification(ownerEntity.getEmail(), ownerEntity.getIdentification()).ifPresent(
+        ownerRepository.findByEmailAndIdentification(ownerEntity.getEmail(), ownerEntity.getIdentification()).ifPresentOrElse(
                 ownerEntity1 -> {
                     ownerEntity.setOwnerId(ownerEntity1.getOwnerId());
                     ownerEntity.setCreatedAt(ownerEntity1.getCreatedAt());
                     ownerEntity.setStatus(ownerEntity1.getStatus());
                     ownerRepository.save(ownerEntity);
                 }
-        );
+                , () -> {
+                    throw new RuntimeException();
+                });
 
     }
 
     @Override
     public void delete(String identification) {
-        ownerRepository.findByIdentification(identification).ifPresent(ownerEntity ->
-                ownerRepository.deleteById(ownerEntity.getOwnerId())
-        );
+        ownerRepository.findByIdentification(identification).ifPresentOrElse(ownerEntity ->
+                        ownerRepository.deleteById(ownerEntity.getOwnerId())
+                , () -> {
+                    throw new RuntimeException();
+                });
     }
 
     @Override

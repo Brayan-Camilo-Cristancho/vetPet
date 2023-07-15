@@ -1,7 +1,6 @@
 package com.vetpet.apprest.domain.repository;
 
 
-
 import java.util.List;
 
 public abstract class CrudRepository<T> {
