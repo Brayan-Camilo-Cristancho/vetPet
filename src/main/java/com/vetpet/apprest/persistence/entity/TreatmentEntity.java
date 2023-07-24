@@ -1,14 +1,15 @@
 package com.vetpet.apprest.persistence.entity;
 
+import com.vetpet.apprest.persistence.audit.AuditableEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -16,8 +17,9 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "treatment")
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
-public class TreatmentEntity {
+public class TreatmentEntity extends AuditableEntity {
     @Id
     @Column(name = "treatment_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -46,12 +48,6 @@ public class TreatmentEntity {
 
     @Column(name = "status")
     private Boolean status;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "treatmentEntity", cascade = CascadeType.ALL)
     private Set<TreatmentMedicationEntity> treatmentMedicationEntities = new LinkedHashSet<>();

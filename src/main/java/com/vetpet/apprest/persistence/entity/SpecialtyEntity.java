@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -29,5 +32,8 @@ public class SpecialtyEntity {
 
     @Column(name = "status")
     private Boolean status;
+
+    @OneToMany(mappedBy = "specialtyEntity", fetch = FetchType.LAZY)
+    private Set<DoctorEntity> doctorEntities = new LinkedHashSet<>();
 
 }

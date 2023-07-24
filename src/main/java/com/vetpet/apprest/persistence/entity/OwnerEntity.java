@@ -1,5 +1,7 @@
 package com.vetpet.apprest.persistence.entity;
 
+import com.vetpet.apprest.persistence.audit.AuditOwnerListener;
+import com.vetpet.apprest.persistence.audit.AuditableEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -7,8 +9,9 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
+import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -16,8 +19,9 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "owner")
+@EntityListeners({AuditingEntityListener.class, AuditOwnerListener.class})
 @NoArgsConstructor
-public class OwnerEntity {
+public class OwnerEntity extends AuditableEntity implements Serializable {
     @Id
     @Column(name = "owner_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -55,11 +59,6 @@ public class OwnerEntity {
     @Column(name = "status")
     private Boolean status;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "ownerEntity", cascade = CascadeType.ALL)
     private Set<PetEntity> petEntities = new LinkedHashSet<>();

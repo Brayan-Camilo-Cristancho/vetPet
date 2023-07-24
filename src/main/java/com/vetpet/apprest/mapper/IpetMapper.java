@@ -25,8 +25,6 @@ public interface IpetMapper {
 
     @InheritInverseConfiguration
     @Mapping(target = "status", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "idChip", source = "chipIdPet")
     PetEntity toPetEntity(PetDto petDto);
 }

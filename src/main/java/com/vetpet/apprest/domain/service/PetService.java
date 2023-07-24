@@ -62,7 +62,9 @@ public class PetService {
         } catch (DataIntegrityViolationException e) {
             throw new ToDoExceptions("Verify your data and if you wrote a chip verify that it is correctly written", HttpStatus.BAD_REQUEST);
         } catch (RuntimeException e) {
+            e.printStackTrace();
             throw new ToDoExceptions("Please make sure your ID and email are correct", HttpStatus.BAD_REQUEST);
+
         }
         return ResponseEntity.status(HttpStatus.CREATED).body("Your pet has been created successfully");
 

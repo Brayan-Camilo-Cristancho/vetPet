@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING, uses = {IpetMapper.class})
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface IownerMapper {
     @Mapping(target = "emailOwner", source = "email")
     @Mapping(target = "phoneOwner", source = "phone")
@@ -22,8 +22,6 @@ public interface IownerMapper {
 
     @InheritInverseConfiguration
     @Mapping(target = "status", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "identification", source = "idenOwner")
     OwnerEntity toOwnerEntity(OwnerDto ownerDto);
 }

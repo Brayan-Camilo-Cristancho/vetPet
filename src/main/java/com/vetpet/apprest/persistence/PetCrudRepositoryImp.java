@@ -30,26 +30,22 @@ public class PetCrudRepositoryImp extends CrudRepository<PetDto> implements PetD
     }
 
     @Override
-    @Transactional
     public List<PetDto> findBySpecies(String specie) {
         List<PetEntity> pets = petRepository.findBySpeciesOrderByName(specie);
         return ipetMapper.toPetsDto(pets);
     }
 
     @Override
-    @Transactional
     public List<PetDto> findByOwner(String email, String iden) {
         return ipetMapper.toPetsDto(petRepository.findByOwnerEntityEmailAndOwnerEntityIdentification(email, iden));
     }
 
     @Override
-    @Transactional
     public Optional<PetDto> findByChip(String chip) {
         return petRepository.findByIdChip(chip).map(ipetMapper::toPetDto);
     }
 
     @Override
-    @Transactional
     public List<PetDto> getAll() {
         return ipetMapper.toPetsDto(petRepository.findAll());
     }

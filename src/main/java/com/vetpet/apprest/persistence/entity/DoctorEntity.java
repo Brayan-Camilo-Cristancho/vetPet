@@ -1,14 +1,13 @@
 package com.vetpet.apprest.persistence.entity;
 
+import com.vetpet.apprest.persistence.audit.AuditableEntity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -16,8 +15,9 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "doctor")
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
-public class DoctorEntity {
+public class DoctorEntity extends AuditableEntity {
     @Id
     @Column(name = "doctor_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -41,19 +41,20 @@ public class DoctorEntity {
     @Column(name = "email", nullable = false, length = 100)
     @Email
     private String email;
+    @Column
+    @Size(max = 100)
+    @Positive
+    private Integer age;
+    @Column
+    @Pattern(regexp = "[FM]")
+    private Character sex;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "specialty_id")
     private SpecialtyEntity specialtyEntity;
 
     @Column(name = "status")
     private Boolean status;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "doctorEntity")
     private Set<AppointmentEntity> appointmentEntities = new LinkedHashSet<>();
