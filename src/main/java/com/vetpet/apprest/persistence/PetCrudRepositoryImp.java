@@ -92,7 +92,7 @@ public class PetCrudRepositoryImp extends CrudRepository<PetDto> implements PetD
     }
 
     @Override
-    @Transactional
+    @Transactional()
     public void delete(String chipId) {
         if (petRepository.existsByIdChip(chipId)) {
             petRepository.deleteByIdChip(chipId);

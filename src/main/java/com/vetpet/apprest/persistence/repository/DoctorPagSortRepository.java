@@ -12,4 +12,5 @@ public interface DoctorPagSortRepository extends ListPagingAndSortingRepository<
     Page<DoctorEntity> findByAgeBetween(Integer in, Integer fin, Pageable pageable);
 
     Slice<DoctorEntity> findByAgeGreaterThanAndSex(Integer mayor, Character sex, Pageable pageable);
+
 }

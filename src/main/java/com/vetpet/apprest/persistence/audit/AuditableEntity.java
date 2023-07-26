@@ -19,5 +19,6 @@ public class AuditableEntity {
 
     @Column(name = "updated_at")
     @LastModifiedDate
+
     private LocalDateTime updatedAt;
 }

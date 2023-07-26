@@ -4,6 +4,7 @@ import com.vetpet.apprest.domain.dto.DoctorDto;
 import com.vetpet.apprest.domain.repository.CrudRepository;
 import com.vetpet.apprest.domain.repository.DoctorDtoRepository;
 import com.vetpet.apprest.exceptions.ToDoExceptions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,7 @@ import java.util.List;
 public class DoctorService {
     private final DoctorDtoRepository doctorDtoRepository;
     private final CrudRepository<DoctorDto> crudRepository;
-
+    @Autowired
     public DoctorService(DoctorDtoRepository doctorDtoRepository, CrudRepository<DoctorDto> crudRepository) {
         this.doctorDtoRepository = doctorDtoRepository;
         this.crudRepository = crudRepository;

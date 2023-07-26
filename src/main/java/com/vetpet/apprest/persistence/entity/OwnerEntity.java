@@ -59,8 +59,8 @@ public class OwnerEntity extends AuditableEntity implements Serializable {
     @Column(name = "status")
     private Boolean status;
 
-
     @OneToMany(mappedBy = "ownerEntity", cascade = CascadeType.ALL)
     private Set<PetEntity> petEntities = new LinkedHashSet<>();
+
 
 }
