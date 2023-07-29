@@ -1,8 +1,6 @@
 package com.vetpet.apprest.persistence.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,26 +18,21 @@ public class InvoiceEntity {
     @Column(name = "invoice_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long invoiceId;
-
-    @Size(max = 500)
-    @Column(name = "description", length = 500)
+    @Column(length = 500)
     private String description;
 
-    @Column(name = "date")
     private LocalDate date;
 
-    @Column(name = "cost", precision = 6, scale = 2)
+    @Column(precision = 6, scale = 2)
     private BigDecimal cost;
 
-    @Column(name = "discount", precision = 2, scale = 1)
+    @Column(precision = 5, scale = 2)
     private BigDecimal discount;
 
-    @NotNull
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "appointment_id", nullable = false)
     private AppointmentEntity appointmentEntity;
-
-    @Column(name = "status")
+    @Column(columnDefinition = "TINYINT(1) default 1")
     private Boolean status;
 
 }

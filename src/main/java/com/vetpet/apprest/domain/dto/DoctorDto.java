@@ -8,13 +8,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class DoctorDto {
-    private String firstNameDoctor;
-    private String lastNameDoctor;
-    private String phoneDoctor;
-    private String emailDoctor;
-    private Character sexDoctor;
-    private Integer ageDoctor;
-    private SpecialtyDto specialtyDto;
+    private UserDto userData;
+    private SpecialtyDto specialty;
+    private Integer numAppointments;
 
 
 }

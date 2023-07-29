@@ -8,13 +8,4 @@ import java.util.Optional;
 
 
 public interface PetRepository extends ListCrudRepository<PetEntity, Long> {
-    List<PetEntity> findBySpeciesOrderByName(String species);
-
-    boolean existsByIdChip(String chip);
-
-    void deleteByIdChip(String idChip);
-
-    Optional<PetEntity> findByIdChip(String chip);
-
-    List<PetEntity> findByOwnerEntityEmailAndOwnerEntityIdentification(String email, String identification);
 }

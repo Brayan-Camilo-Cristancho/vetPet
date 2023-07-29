@@ -1,8 +1,6 @@
 package com.vetpet.apprest.persistence.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,30 +16,23 @@ public class MedicationEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long medicationId;
 
-    @Size(max = 100)
-    @NotNull
-    @Column(name = "name", nullable = false, length = 100, unique = true)
+    @Column(nullable = false, length = 100, unique = true)
     private String name;
 
-    @Size(max = 100)
-    @Column(name = "type", length = 100)
+    @Column(length = 100)
     private String type;
 
-    @Size(max = 500)
-    @Column(name = "description", length = 500)
+    @Column(length = 500)
     private String description;
 
-    @Size(max = 100)
-    @Column(name = "supplier", length = 100)
+    @Column(length = 100)
     private String supplier;
 
-    @Column(name = "initial_quantity")
     private Integer initialQuantity;
 
-    @Column(name = "stock")
     private Integer stock;
 
-    @Column(name = "status")
+    @Column(columnDefinition = "TINYINT(1) default 1")
     private Boolean status;
 
 }

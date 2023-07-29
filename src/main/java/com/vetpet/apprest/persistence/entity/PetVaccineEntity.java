@@ -2,8 +2,6 @@ package com.vetpet.apprest.persistence.entity;
 
 import com.vetpet.apprest.persistence.audit.AuditableEntity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,29 +15,25 @@ import java.time.LocalDateTime;
 @Table(name = "pet_vaccine")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
-public class PetVaccine extends AuditableEntity {
+public class PetVaccineEntity extends AuditableEntity {
     @Id
     @Column(name = "pet_vaccine_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "pet_id", nullable = false)
     private PetEntity petEntity;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "vaccine_id", nullable = false)
     private VaccineEntity vaccineEntity;
 
-    @Column(name = "dose")
     private Short dose;
 
     @Column(name = "last_dose_date", columnDefinition = "DATETIME")
     private LocalDateTime lastDoseDate;
 
-    @Size(max = 10)
     @Column(name = "period_at", length = 10)
     private String periodAt;
 }

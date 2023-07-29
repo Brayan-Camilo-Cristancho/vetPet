@@ -1,7 +1,19 @@
 package com.vetpet.apprest.domain.repository;
 
-import org.springframework.security.core.userdetails.UserDetails;
+
+import com.vetpet.apprest.domain.dto.UserDto;
+import org.springframework.data.domain.Page;
+
+
+import java.util.List;
 
 public interface UserDtoRepository {
-    UserDetails loadUserByUsername(String username);
+    List<UserDto> findAllBySex(Character sex);
+
+    UserDto findByEmailOrIdentification(String email, String identification);
+
+    List<UserDto> findByPhone(String phone);
+
+    Page<UserDto> getAllPage(Integer page, Integer size);
+
 }

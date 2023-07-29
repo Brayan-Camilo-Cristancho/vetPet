@@ -1,10 +1,7 @@
 package com.vetpet.apprest.persistence.entity;
 
-import com.vetpet.apprest.persistence.audit.AuditPetListener;
 import com.vetpet.apprest.persistence.audit.AuditableEntity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,7 +16,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "pet")
-@EntityListeners({AuditingEntityListener.class, AuditPetListener.class})
+@EntityListeners({AuditingEntityListener.class})
 @NoArgsConstructor
 public class PetEntity extends AuditableEntity implements Serializable {
     @Id
@@ -27,49 +24,38 @@ public class PetEntity extends AuditableEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long petId;
 
-    @Size(max = 100)
-    @NotNull
-    @Column(name = "name", nullable = false, length = 100)
+    @Column(nullable = false, length = 100)
     private String name;
 
-    @Size(max = 50)
-    @NotNull
-    @Column(name = "species", nullable = false, length = 50)
+    @Column(nullable = false, length = 50)
     private String species;
 
-    @Size(max = 50)
-    @NotNull
-    @Column(name = "breed", nullable = false, length = 50)
+    @Column(nullable = false, length = 50)
     private String breed;
 
-    @Column(name = "has_chip")
+    @Column(name = "has_chip", columnDefinition = "TINYINT(1) default 1")
     private Boolean hasChip;
 
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
-    @NotNull
+    @Column(name = "owner_id", nullable = false)
+    private Long ownerId;
+
+    @Column(columnDefinition = "TINYINT(1) default 1")
+    private Boolean status;
+
+    @Column(name = "chip_id", unique = true, nullable = false, length = 20)
+    private String idChip;
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "owner_id", nullable = false, insertable = false, updatable = false)
     private OwnerEntity ownerEntity;
-
-    @Column(name = "owner_id")
-    @NotNull
-    private Long ownerId;
-
-    @Column(name = "status")
-    private Boolean status;
-
-    @Column(name = "chip_id", unique = true, nullable = false)
-    @NotNull
-    @Size(max = 20)
-    private String idChip;
 
     @OneToMany(mappedBy = "petEntity", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<AppointmentEntity> appointmentEntities = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "petEntity", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<PetVaccine> petVaccines = new LinkedHashSet<>();
+    private Set<PetVaccineEntity> petVaccineEntities = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "petEntity", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<TreatmentEntity> treatmentEntities = new LinkedHashSet<>();
