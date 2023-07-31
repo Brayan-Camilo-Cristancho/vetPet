@@ -29,7 +29,9 @@ import java.util.stream.Collectors;
 
 
 @Repository
-public class UserCrudRepositoryImp extends CrudRepository<UserDto> implements UserDtoRepository {
+public class
+
+UserCrudRepositoryImp extends CrudRepository<UserDto> implements UserDtoRepository {
     private final UserRepository userRepository;
     private final UserPagSortRepository userPagSortRepository;
     private final UserLoginRepository userLoginRepository;
@@ -52,7 +54,7 @@ public class UserCrudRepositoryImp extends CrudRepository<UserDto> implements Us
 
     @Override
     @Transactional
-    public void save(UserDto entity) {
+    public Long save(UserDto entity, String roleA) {
         UserEntity user = iuserMapper.toUserEntity(entity);
         UserLoginEntity login = iuserMapper.toUserLoginEntity(entity);
         UserRoleEntity role = new UserRoleEntity();
@@ -67,30 +69,26 @@ public class UserCrudRepositoryImp extends CrudRepository<UserDto> implements Us
         userLoginRepository.save(login);
 
         role.setUsername(login.getUsername());
-        role.setRole("customer");
+        role.setRole(roleA);
 
         role.setGrantedDate(LocalDateTime.now());
         userRoleRepository.save(role);
-
+        return user.getUserId();
     }
 
 
     @Override
-    public void update(UserDto entity) {
-        UserLoginEntity userUpdates = iuserMapper.toUserLoginEntity(entity);
-        Optional<UserLoginEntity> userLogin = userLoginRepository.findById(userUpdates.getUsername());
-        userLogin.ifPresentOrElse(userLoginEntity -> {
-
-            if (userUpdates.getLocked() != null) {
-                userLoginEntity.setLocked(userUpdates.getLocked());
-            }
-            if (userUpdates.getDisabled() != null) {
-                userLoginEntity.setDisabled(userUpdates.getDisabled());
-            }
-            userLoginRepository.save(userLoginEntity);
-
+    public void update(UserDto user) {
+        System.out.println(user.getUsername()+ "jusfadghfsdjkfsdgjfhsdkgfsdjh");
+        Optional<UserLoginEntity> login = userLoginRepository.findByUsername(user.getUsername());
+        UserEntity userEntity = iuserMapper.toUserEntity(user);
+        login.ifPresentOrElse(userLoginEntity -> {
+            userEntity.setUserId(userLoginEntity.getUserId());
+            userEntity.setCreatedAt(userLoginEntity.getUserEntity().getCreatedAt());
+            userEntity.setAssigned_role(userLoginEntity.getUserEntity().getAssigned_role());
+            userRepository.save(userEntity);
         }, () -> {
-            throw new UserNotFoundException("User role not found for username: " + entity.getUsername());
+            throw new UserNotFoundException("User not found");
         });
 
     }
@@ -98,8 +96,7 @@ public class UserCrudRepositoryImp extends CrudRepository<UserDto> implements Us
     @Override
     @Transactional
     public void delete(String username) {
-        UserRoleEntity userRoleEntity = userRoleRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException("User role not found for username: " + username));
+        UserRoleEntity userRoleEntity = userRoleRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("User role not found for username: " + username));
 
         if (userRoleEntity.getRole().equals("customer")) {
             userRoleRepository.deleteByUsername(userRoleEntity.getUsername());
@@ -119,9 +116,7 @@ public class UserCrudRepositoryImp extends CrudRepository<UserDto> implements Us
 
     @Override
     public UserDto findByEmailOrIdentification(String email, String identification) {
-        return userRepository.findByEmailOrIdentification(email, identification)
-                .map(iuserMapper::toUserDto)
-                .orElseThrow(() -> new ValuesNotFound("No data to display"));
+        return userRepository.findByEmailOrIdentification(email, identification).map(iuserMapper::toUserDto).orElseThrow(() -> new ValuesNotFound("No data to display"));
     }
 
     @Override
@@ -133,5 +128,24 @@ public class UserCrudRepositoryImp extends CrudRepository<UserDto> implements Us
     public Page<UserDto> getAllPage(Integer page, Integer size) {
         Pageable pageableWithSorting = PageRequest.of(page, size, Sort.by("firstName").ascending());
         return iuserMapper.toUsersPageDto(userPagSortRepository.findAll(pageableWithSorting));
+    }
+
+    @Override
+    public void updateOther(UserDto user) {
+        UserLoginEntity userUpdates = iuserMapper.toUserLoginEntity(user);
+        Optional<UserLoginEntity> userLogin = userLoginRepository.findById(userUpdates.getUsername());
+        userLogin.ifPresentOrElse(userLoginEntity -> {
+
+            if (userUpdates.getLocked() != null) {
+                userLoginEntity.setLocked(userUpdates.getLocked());
+            }
+            if (userUpdates.getDisabled() != null) {
+                userLoginEntity.setDisabled(userUpdates.getDisabled());
+            }
+            userLoginRepository.save(userLoginEntity);
+
+        }, () -> {
+            throw new UserNotFoundException("User role not found for username: " + user.getUsername());
+        });
     }
 }

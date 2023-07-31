@@ -16,8 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class DoctorEntity {
     @Id
-    @Column(name = "doctor_id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "doctor_id", nullable = false, unique = true)
     private Long doctorId;
     @Column(name = "num_appointments")
     private Integer numAppointments;

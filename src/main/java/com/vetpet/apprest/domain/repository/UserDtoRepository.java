@@ -16,4 +16,6 @@ public interface UserDtoRepository {
 
     Page<UserDto> getAllPage(Integer page, Integer size);
 
+    void updateOther(UserDto user);
+
 }

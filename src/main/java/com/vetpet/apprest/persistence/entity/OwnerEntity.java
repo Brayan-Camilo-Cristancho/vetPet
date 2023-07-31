@@ -16,8 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class OwnerEntity {
     @Id
-    @Column(name = "owner_id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "owner_id", nullable = false, unique = true)
     private Long ownerId;
 
     @Column(name = "total_Spent")

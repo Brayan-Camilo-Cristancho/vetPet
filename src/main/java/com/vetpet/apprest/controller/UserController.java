@@ -17,7 +17,7 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAllOwner() {
+    public ResponseEntity<?> getAllUser() {
         return userService.userGetAll();
     }
 
@@ -26,9 +26,9 @@ public class UserController {
         return userService.userSave(userDto);
     }
 
-    @PatchMapping("/update")
-    public ResponseEntity<?> updateUser(@RequestBody UserDto userDto) {
-        return userService.userUpdate(userDto);
+    @PatchMapping("/update-other")
+    public ResponseEntity<?> updateUserOther(@RequestBody UserDto userDto) {
+        return userService.userUpdateOther(userDto);
     }
 
     @DeleteMapping("/delete")
@@ -54,5 +54,11 @@ public class UserController {
     @GetMapping("/all-page")
     public ResponseEntity<?> getAllPage(@RequestParam Integer page, @RequestParam Integer size) {
         return userService.userGetAllPage(page, size);
+    }
+
+    @PatchMapping("/update")
+    public ResponseEntity<?> updateUser(@RequestBody UserDto userDto) {
+        return userService.userUpdate(userDto);
+
     }
 }

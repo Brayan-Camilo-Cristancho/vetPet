@@ -39,7 +39,7 @@ public class UserService {
 
     public ResponseEntity<?> userSave(UserDto userDto) {
         try {
-            this.crudRepository.save(userDto);
+            this.crudRepository.save(userDto, "customer");
         } catch (DataIntegrityViolationException e) {
             e.printStackTrace();
             throw new ToDoExceptions("Check your data again", HttpStatus.BAD_REQUEST);
@@ -48,9 +48,9 @@ public class UserService {
 
     }
 
-    public ResponseEntity<?> userUpdate(UserDto userDto) {
+    public ResponseEntity<?> userUpdateOther(UserDto userDto) {
         try {
-            this.crudRepository.update(userDto);
+            this.userDtoRepository.updateOther(userDto);
 
         } catch (UserNotFoundException e) {
             e.printStackTrace();
@@ -108,5 +108,16 @@ public class UserService {
             throw new ToDoExceptions("No users to view", HttpStatus.NO_CONTENT);
         }
         return ResponseEntity.ok(userDtos);
+    }
+
+    public ResponseEntity<?> userUpdate(UserDto user) {
+        try {
+            this.crudRepository.update(user);
+
+        } catch (UserNotFoundException e) {
+            e.printStackTrace();
+            throw new ToDoExceptions("User not found", HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok("User updated successfully");
     }
 }
